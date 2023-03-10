@@ -10,7 +10,11 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/:id', (req, res, next) => {
-  // DO YOUR MAGIC
+  Account.getById(req.params.id)
+    .then(account => {
+      res.json(account)
+    })
+      .catch(next)
 })
 
 router.post('/', (req, res, next) => {
