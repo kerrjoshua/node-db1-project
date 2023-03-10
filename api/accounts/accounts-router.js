@@ -22,8 +22,11 @@ router.get('/:id', checkAccountId, (req, res, next) => {
       .catch(next)
 })
 
-router.post('/', (req, res, next) => {
-  // DO YOUR MAGIC
+router.post('/', checkAccountPayload, checkAccountNameUnique, (req, res, next) => {
+  Account.create(req.body)
+    .then(createdAccount => {
+      res.status(210).json(createdAccount)
+    })
 })
 
 router.put('/:id', (req, res, next) => {
@@ -37,6 +40,7 @@ router.delete('/:id', (req, res, next) => {
 router.use((err, req, res, next) => { // eslint-disable-line
   res.status( err.status || 500)
     .json( {
+      stack: err.stack,
       message: err.message,
       customMessage: 'Something went wrong in the accounts router.'
     })
