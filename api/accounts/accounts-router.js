@@ -23,8 +23,7 @@ router.get('/:id', checkAccountId, (req, res, next) => {
 })
 
 router.post('/', checkAccountPayload, checkAccountNameUnique, (req, res, next) => {
-  const name = req.body.name.trim();
-  req.body.name = name;
+ 
   Account.create(req.body)
     .then(createdAccount => {
       res.status(201).json(createdAccount)
