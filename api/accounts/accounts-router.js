@@ -23,14 +23,21 @@ router.get('/:id', checkAccountId, (req, res, next) => {
 })
 
 router.post('/', checkAccountPayload, checkAccountNameUnique, (req, res, next) => {
+  const name = req.body.name.trim();
+  req.body.name = name;
   Account.create(req.body)
     .then(createdAccount => {
-      res.status(210).json(createdAccount)
+      res.status(201).json(createdAccount)
     })
+    .catch(next)
 })
 
-router.put('/:id', (req, res, next) => {
-  // DO YOUR MAGIC
+router.put('/:id', checkAccountId,checkAccountPayload, checkAccountNameUnique, (req, res, next) => {
+  Account.updateById(req.params.id, req.body)
+    .then(updated => {
+      res.json(updated)
+    })
+    .catch(next)
 });
 
 router.delete('/:id', checkAccountId, (req, res, next) => {
